@@ -1,0 +1,32 @@
+.feed-container {
+  max-width: 680px;
+  min-width: 700px;
+  margin: 24px 15px;
+  padding: 0 16px;
+}
+
+.feed-header {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-layout {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px;
+  background: #f3f2ef;
+}
+
+@media (max-width: 1024px) {
+  .page-layout {
+    flex-direction: column;
+  }
+}

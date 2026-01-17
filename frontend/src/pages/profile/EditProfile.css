@@ -1,0 +1,71 @@
+.edit-page {
+  min-height: 100vh;
+  background: #f3f2ef;
+  padding: 24px;
+}
+
+.edit-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.edit-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.edit-card h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.edit-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.edit-field label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.edit-field input,
+.edit-field textarea {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.edit-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.edit-actions button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.edit-save {
+  background: #0a66c2;
+  color: white;
+  opacity: 0.6;
+}

@@ -1,0 +1,47 @@
+[
+    {
+        "id": "4eaa4d5e-517e-42fc-aa1d-06ad67ff410c",
+        "title": "Garbage not collected",
+        "category": "Garbage",
+        "status": "CLOSED",
+        "locality": "Whitefield",
+        "createdAt": "2026-01-06T18:51:19.497Z",
+        "slaDeadline": "2026-01-07T18:51:18.825Z",
+        "media": []
+    },
+    {
+        "id": "0bf0785b-716e-4344-aae9-309f1770adcc",
+        "title": "Fire is found in the neighbours",
+        "category": "Garbage",
+        "status": "OPEN",
+        "locality": "Whitefield",
+        "createdAt": "2026-01-09T16:50:31.205Z",
+        "slaDeadline": "2026-01-10T16:50:30.570Z",
+        "media": []
+    },
+    {
+        "id": "dd925060-78a3-4db9-adf0-58b0920e7684",
+        "title": "Fire is found in the neighbours",
+        "category": "Garbage",
+        "status": "OPEN",
+        "locality": "Whitefield",
+        "createdAt": "2026-01-09T17:04:01.849Z",
+        "slaDeadline": "2026-01-10T17:04:01.191Z",
+        "media": []
+    },
+    {
+        "id": "b82ce789-0220-4440-872d-aa81c945f3e0",
+        "title": "Garbage not collected",
+        "category": "Garbage",
+        "status": "OPEN",
+        "locality": "Whitefield",
+        "createdAt": "2026-01-09T17:25:42.738Z",
+        "slaDeadline": "2026-01-10T17:25:41.513Z",
+        "media": [
+            {
+                "type": "IMAGE",
+                "url": "https://res.cloudinary.com/dg1fcnwiy/image/upload/v1767979561/civic-monitor/issues/fwmuz8ohwyugocw5hrjw.jpg"
+            }
+        ]
+    }
+]

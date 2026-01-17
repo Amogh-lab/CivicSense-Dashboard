@@ -1,0 +1,102 @@
+.create-page {
+  min-height: 100vh;
+  background-color: #f3f2ef;
+  padding: 24px;
+}
+
+.create-container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.create-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.create-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.create-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.create-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.create-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.create-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.create-field input,
+.create-field textarea,
+.create-field select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.create-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.create-field input:focus,
+.create-field textarea:focus,
+.create-field select:focus {
+  outline: none;
+  border-color: #0a66c2;
+}
+
+.create-file {
+  font-size: 13px;
+}
+
+.create-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.create-submit {
+  padding: 10px 16px;
+  background-color: #0a66c2;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.create-submit:disabled {
+  opacity: 0.6;
+}

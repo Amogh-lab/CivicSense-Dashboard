@@ -1,0 +1,101 @@
+.explore-page {
+  min-height: 100vh;
+  background-color: #f3f2ef;
+  padding-top: 24px;
+}
+
+.explore-container {
+  max-width: 720px;
+    min-width: 700px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+.explore-header {
+  margin-bottom: 16px;
+}
+
+.explore-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.explore-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.explore-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.explore-search {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+
+.explore-search:focus {
+  outline: none;
+  border-color: #0a66c2;
+}
+
+.explore-refresh {
+  padding: 10px 14px;
+  background-color: #0a66c2;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.explore-count {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.explore-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.explore-empty {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+}
+
+.explore-empty h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.explore-empty p {
+  font-size: 14px;
+  color: #6b7280;
+}
+.page-layout {
+  display: flex;
+  gap: 24px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (max-width: 1024px) {
+  .page-layout {
+    flex-direction: column;
+  }
+}
