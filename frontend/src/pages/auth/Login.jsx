@@ -25,7 +25,7 @@ const Login = () => {
     setUser(data);
 
     localStorage.setItem("user", JSON.stringify(data)); // cache only
-    navigate("/feed");
+    navigate("/explore");
   } catch {
     setError("Invalid email or password");
   } finally {

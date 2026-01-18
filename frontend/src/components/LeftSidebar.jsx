@@ -4,7 +4,13 @@ import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 import "./LeftSidebar.css";
 
-const STATUSES = ["OPEN", "IN_PROGRESS", "CLOSED"];
+const STATUSES = [
+  "OPEN",
+  "IN_PROGRESS",
+  "RESOLVED_PENDING_USER",
+  "CLOSED",
+];
+
 const CACHE_KEY = "my_issues_sidebar";
 
 const LeftSidebar = () => {
@@ -14,12 +20,14 @@ const LeftSidebar = () => {
   const [myIssues, setMyIssues] = useState({
     OPEN: [],
     IN_PROGRESS: [],
+    RESOLVED_PENDING_USER: [],
     CLOSED: [],
   });
 
   const [hasMore, setHasMore] = useState({
     OPEN: false,
     IN_PROGRESS: false,
+    RESOLVED_PENDING_USER: false,
     CLOSED: false,
   });
 
@@ -50,6 +58,7 @@ const LeftSidebar = () => {
         const grouped = {
           OPEN: [],
           IN_PROGRESS: [],
+          RESOLVED_PENDING_USER: [],
           CLOSED: [],
         };
 
@@ -74,7 +83,6 @@ const LeftSidebar = () => {
         setMyIssues(limited);
         setHasMore(more);
 
-        // cache for instant load next time
         localStorage.setItem(
           CACHE_KEY,
           JSON.stringify({
@@ -83,7 +91,7 @@ const LeftSidebar = () => {
           })
         );
       } catch {
-        // sidebar must NEVER break app
+        // Sidebar must NEVER break the app
       }
     };
 
@@ -123,7 +131,7 @@ const LeftSidebar = () => {
           <div key={status} className="sidebar-issue-group">
 
             <div className="sidebar-issue-status">
-              {status.replace("_", " ")}
+              {status.replaceAll("_", " ")}
             </div>
 
             {myIssues[status].length === 0 ? (
@@ -134,7 +142,7 @@ const LeftSidebar = () => {
                   key={issue.id}
                   className="sidebar-issue-item"
                   onClick={() =>
-                    navigate(`/profile?issue=${issue.id}`)
+                    navigate(`/issues/${issue.id}`)
                   }
                 >
                   <span className="sidebar-issue-title">

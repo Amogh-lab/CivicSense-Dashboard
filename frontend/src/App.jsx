@@ -6,7 +6,11 @@ import Signup from "./pages/auth/Signup";
 import Feed from "./pages/citizen/Feed";
 import Explore from "./pages/citizen/Explore";
 import CreateIssue from "./pages/citizen/CreateIssue";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import CitizenIssuePage from "./pages/citizen/CitizenIssuePage";
+
+import AdminFeed from "./pages/admin/AdminFeed";
+import AdminIssuePage from "./pages/admin/AdminIssuePage";
+
 import Navbar from "./components/Navbar";
 import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
@@ -27,30 +31,74 @@ function App() {
       {showNavbar && <Navbar />}
 
       <Routes>
-        <Route path="/login" element={user ? <Navigate to="/feed" /> : <Login />} />
-        <Route path="/signup" element={user ? <Navigate to="/feed" /> : <Signup />} />
+        {/* AUTH */}
+        <Route
+          path="/login"
+          element={
+            user
+              ? <Navigate to={user.isAdmin ? "/admin" : "/feed"} />
+              : <Login />
+          }
+        />
 
+        <Route
+          path="/signup"
+          element={
+            user
+              ? <Navigate to={user.isAdmin ? "/admin" : "/feed"} />
+              : <Signup />
+          }
+        />
+
+        {/* CITIZEN */}
         <Route
           path="/feed"
           element={<ProtectedRoute><Feed /></ProtectedRoute>}
         />
+
         <Route
           path="/explore"
           element={<ProtectedRoute><Explore /></ProtectedRoute>}
         />
+
         <Route
           path="/create-issue"
           element={<ProtectedRoute><CreateIssue /></ProtectedRoute>}
         />
 
+        {/* 🔥 CITIZEN ISSUE DETAILS */}
         <Route
-          path="/admin"
-          element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>}
+          path="/issues/:issueId"
+          element={<ProtectedRoute><CitizenIssuePage /></ProtectedRoute>}
         />
 
-        <Route path="*" element={<Navigate to="/feed" />} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-<Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
+        {/* ADMIN */}
+        <Route
+          path="/admin"
+          element={<ProtectedRoute adminOnly><AdminFeed /></ProtectedRoute>}
+        />
+
+        <Route
+          path="/admin/issues/:issueId"
+          element={<ProtectedRoute adminOnly><AdminIssuePage /></ProtectedRoute>}
+        />
+
+        {/* PROFILE */}
+        <Route
+          path="/profile"
+          element={<ProtectedRoute><Profile /></ProtectedRoute>}
+        />
+
+        <Route
+          path="/profile/edit"
+          element={<ProtectedRoute><EditProfile /></ProtectedRoute>}
+        />
+
+        {/* FALLBACK */}
+        <Route
+          path="*"
+          element={<Navigate to={user?.isAdmin ? "/admin" : "/feed"} />}
+        />
       </Routes>
     </div>
   );
