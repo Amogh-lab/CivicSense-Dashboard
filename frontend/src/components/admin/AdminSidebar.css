@@ -1,0 +1,39 @@
+.admin-sidebar {
+  width: 240px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  height: fit-content;
+  margin-left: 20px;
+}
+
+.admin-sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.admin-sidebar-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+}
+
+.admin-sidebar-item:hover {
+  background: #f3f4f6;
+}
+
+.admin-sidebar-item.active {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 600;
+}
+
+.admin-sidebar-item .count {
+  font-weight: 600;
+}

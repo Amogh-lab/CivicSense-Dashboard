@@ -34,7 +34,11 @@ const Navbar = () => {
         <div className="navbar-logo">Civic Monitor</div>
 
         <div className="navbar-links">
-          <NavLink to="/feed">Feed</NavLink>
+          {user.isAdmin ? (
+            <NavLink to="/admin">Admin Feed</NavLink>
+          ) : (
+            <NavLink to="/feed">Feed</NavLink>
+          )}
           <NavLink to="/explore">Explore</NavLink>
           <NavLink to="/create-issue">Report</NavLink>
 

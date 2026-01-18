@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 import CommentsSection from "./CommentsSection";
-import { FaArrowUp, FaRegComment } from "react-icons/fa";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-
+import {
+  FaArrowUp,
+  FaRegComment,
+  FaChevronLeft,
+  FaChevronRight
+} from "react-icons/fa";
 import "./IssueCard.css";
 
 const IssueCard = ({ issue }) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const [upvoteCount, setUpvoteCount] = useState(issue.upvotes ?? 0);
   const [commentCount, setCommentCount] = useState(issue.comments ?? 0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
@@ -16,152 +24,126 @@ const IssueCard = ({ issue }) => {
   const [comments, setComments] = useState([]);
   const [commentsLoaded, setCommentsLoaded] = useState(false);
 
+  const mediaList = Array.isArray(issue.media) ? issue.media : [];
+  const totalMedia = mediaList.length;
+  const [activeMedia, setActiveMedia] = useState(0);
+
   useEffect(() => {
     setUpvoteCount(issue.upvotes ?? 0);
     setCommentCount(issue.comments ?? 0);
-  }, [issue.upvotes, issue.comments]);
+    setActiveMedia(0);
+  }, [issue.upvotes, issue.comments, totalMedia]);
+
+  /* ---------------- ROUTE DECISION ---------------- */
+
+  const handleCardClick = () => {
+    if (user?.isAdmin) {
+      navigate(`/admin/issues/${issue.id}`);
+    } else {
+      navigate(`/issues/${issue.id}`);
+    }
+  };
 
   /* ---------------- COMMENTS ---------------- */
 
   const prefetchComments = async () => {
     if (commentsLoaded) return;
-
-    try {
-      const { data } = await api.get(`/issues/${issue.id}/comments`);
-      const list = Array.isArray(data) ? data : [];
-      setComments(list);
-      setCommentCount(list.length);
-    } catch {
-      setComments([]);
-    } finally {
-      setCommentsLoaded(true);
-    }
+    const { data } = await api.get(`/issues/${issue.id}/comments`);
+    setComments(Array.isArray(data) ? data : []);
+    setCommentCount(data?.length ?? 0);
+    setCommentsLoaded(true);
   };
 
   /* ---------------- UPVOTE ---------------- */
 
-  const handleUpvote = async () => {
+  const handleUpvote = async (e) => {
+    e.stopPropagation();
     if (upvoteLoading) return;
 
     try {
       setUpvoteLoading(true);
-
       await api.post(`/issues/${issue.id}/upvote`);
-
       setHasUpvoted((p) => !p);
-      setUpvoteCount((p) =>
-        hasUpvoted ? Math.max(p - 1, 0) : p + 1
-      );
-    } catch (err) {
-      console.error("Upvote failed", err);
+      setUpvoteCount((p) => (hasUpvoted ? Math.max(p - 1, 0) : p + 1));
     } finally {
       setUpvoteLoading(false);
     }
   };
-/* ---------------- MEDIA ---------------- */
-  const [activeMedia, setActiveMedia] = useState(0);
 
-const totalMedia = issue.media?.length || 0;
+  /* ---------------- MEDIA ---------------- */
 
-const nextMedia = () => {
-  setActiveMedia((p) => (p + 1) % totalMedia);
-};
+  const nextMedia = (e) => {
+    e.stopPropagation();
+    setActiveMedia((p) => (p + 1) % totalMedia);
+  };
 
-const prevMedia = () => {
-  setActiveMedia((p) => (p - 1 + totalMedia) % totalMedia);
-};
-
+  const prevMedia = (e) => {
+    e.stopPropagation();
+    setActiveMedia((p) => (p - 1 + totalMedia) % totalMedia);
+  };
 
   return (
-    <div className="issue-card">
+    <div className="issue-card" onClick={handleCardClick}>
 
       {/* HEADER */}
       <div className="issue-header">
-          <div className="issue-avatar">
-            {issue.postedBy?.profilePhotoUrl || issue.postedBy?.avatar ? (
-              <img
-                src={issue.postedBy.profilePhotoUrl || issue.postedBy.avatar}
-                alt={issue.postedBy.name}
-              />
-            ) : (
-              <span>
-                {issue.postedBy?.name?.[0]?.toUpperCase()}
-              </span>
-            )}
-          </div>
+        <div className="issue-avatar">
+          {issue.postedBy?.avatar ? (
+            <img src={issue.postedBy.avatar} alt="" />
+          ) : (
+            <span>{issue.postedBy?.name?.[0]}</span>
+          )}
+        </div>
 
         <div className="issue-meta">
           <div className="issue-author">{issue.postedBy?.name}</div>
           <div className="issue-submeta">
-            {issue.locality} •{" "}
-            {new Date(issue.createdAt).toLocaleDateString()}
+            {issue.locality} • {new Date(issue.createdAt).toLocaleDateString()}
           </div>
         </div>
 
         <div className={`issue-status status-${issue.status.toLowerCase()}`}>
-          {issue.status}
+          {issue.status.replaceAll("_", " ")}
         </div>
       </div>
 
       {/* CONTENT */}
       <div className="issue-content">
         <p className="issue-title">{issue.title}</p>
-
         <div className="issue-tags">
-          <span className="issue-tag">{issue.category}</span>
-          <span className="issue-sep">•</span>
-          <span className="issue-tag">{issue.department}</span>
-          <span className="issue-sep">•</span>
-          <span className="issue-tag">{issue.locality}</span>
+          {issue.category} • {issue.department} • {issue.locality}
         </div>
-
         {issue.description && (
-          <p className="issue-description">
-            {issue.description}
-          </p>
+          <p className="issue-description">{issue.description}</p>
         )}
       </div>
 
       {/* MEDIA */}
-        {issue.media?.length > 0 && (
-          <div className="issue-media-slider">
-            <div
-              className="issue-media-track"
-              style={{ transform: `translateX(-${activeMedia * 100}%)` }}
-            >
-              {issue.media.map((m, idx) => (
-                <div key={idx} className="issue-media-item">
-                  {m.type === "VIDEO" ? (
-                    <video src={m.url} controls />
-                  ) : (
-                    <img src={m.url} alt="Issue media" />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {totalMedia > 1 && (
-              <>
-                <button className="media-nav left" onClick={prevMedia}>
-                  <FaChevronLeft />
-                </button>
-                <button className="media-nav right" onClick={nextMedia}>
-                  <FaChevronRight />
-                </button>
-
-                <div className="media-dots">
-                  {issue.media.map((_, i) => (
-                    <span
-                      key={i}
-                      className={`dot ${i === activeMedia ? "active" : ""}`}
-                      onClick={() => setActiveMedia(i)}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
+      {totalMedia > 0 && (
+        <div className="issue-media-slider">
+          <div
+            className="issue-media-track"
+            style={{ transform: `translateX(-${activeMedia * 100}%)` }}
+          >
+            {mediaList.map((m, idx) => (
+              <div key={idx} className="issue-media-item">
+                <img src={m.url} alt="" />
+              </div>
+            ))}
           </div>
-        )}
+
+          {totalMedia > 1 && (
+            <>
+              <button className="media-nav left" onClick={prevMedia}>
+                <FaChevronLeft />
+              </button>
+              <button className="media-nav right" onClick={nextMedia}>
+                <FaChevronRight />
+              </button>
+            </>
+          )}
+        </div>
+      )}
 
       {/* STATS */}
       <div className="issue-stats">
@@ -171,30 +153,22 @@ const prevMedia = () => {
 
       {/* ACTIONS */}
       <div className="issue-actions">
-        <button
-          type="button"
-          className={hasUpvoted ? "upvoted" : ""}
-          onClick={handleUpvote}
-          disabled={upvoteLoading}
-        >
-          <FaArrowUp />
-          {hasUpvoted ? "Upvoted" : "Upvote"}
+        <button onClick={handleUpvote} disabled={upvoteLoading}>
+          <FaArrowUp /> {hasUpvoted ? "Upvoted" : "Upvote"}
         </button>
 
         <button
-          type="button"
           onMouseEnter={prefetchComments}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             prefetchComments();
             setShowComments((p) => !p);
           }}
         >
-          <FaRegComment />
-          Comment
+          <FaRegComment /> Comment
         </button>
       </div>
 
-      {/* COMMENTS INLINE */}
       {showComments && (
         <CommentsSection
           issueId={issue.id}

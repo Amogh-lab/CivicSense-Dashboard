@@ -9,7 +9,7 @@ import RightSidebarGlobal from "../../components/RightSidebarGlobal";
 
 
 const BATCH_SIZE = 5;
-const ALLOWED_STATUSES = ["OPEN", "IN_PROGRESS"];
+const ALLOWED_STATUSES = ["OPEN", "IN_PROGRESS", "RESOLVED_PENDING_USER"];
 
 const Explore = () => {
   const [allIssues, setAllIssues] = useState([]);
