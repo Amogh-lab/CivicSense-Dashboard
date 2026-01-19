@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import api from "../../api/axios";
-import { useAuth } from "../../context/AuthContext";
-// import authImage from "../../assets/authimage.png";
-import "./Auth.css";
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import api from '../../api/axios';
+import { useAuth } from '../../context/AuthContext';
+import { Lock, Mail, ArrowRight } from 'lucide-react';
+import './Login.css';
 
 const Login = () => {
   const { setUser } = useAuth();
@@ -14,78 +14,102 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError("");
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-  try {
-    await api.post("/auth/login", form); // cookie is set here
-
-    const { data } = await api.get("/users/me"); // cookie auto sent
-    setUser(data);
-
-    localStorage.setItem("user", JSON.stringify(data)); // cache only
-    navigate("/explore");
-  } catch {
-    setError("Invalid email or password");
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      await api.post("/auth/login", form);
+      const { data } = await api.get("/users/me");
+      setUser(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      navigate("/explore");
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Login failed. Please try again.';
+      setError(errorMessage);
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="auth-root">
-      <header className="auth-header">
-        <div className="auth-logo">CivicSense</div>
-        <div className="auth-actions">
-          <Link to="/signup">Register</Link>
-          <Link to="/login" className="primary">Sign in</Link>
-        </div>
-      </header>
+    <div className="login-container">
+      <div className="login-header">
+        <img 
+          src="/logo-without-text.png" 
+          alt="CivicSense Logo" 
+          className="login-logo"
+        />
+        <h1 className="login-title">Welcome back</h1>
+        <p className="login-subtitle">Sign in to your CivicSense account</p>
+      </div>
+      
+      <div className="login-card">
 
-      <main className="auth-main">
-        <div className="auth-left">
-          <h1>Find solutions through your community</h1>
+        {error && <div className="error-message">{error}</div>}
 
-          {error && <div className="auth-error">{error}</div>}
-
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email address"
-              required
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-            />
-
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-            />
-
-            <div className="auth-forgot">Forgot password?</div>
-
-            <button disabled={loading}>
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
-
-            {/* <div className="auth-divider">
-              <span>or</span>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">Email</label>
+            <div className="input-with-icon">
+              <Mail className="input-icon" size={20} />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="form-input"
+                placeholder="Email address"
+              />
             </div>
+          </div>
 
-            <button type="button" className="secondary">
-              Continue as guest
-            </button> */}
-          </form>
+          <div className="form-group">
+            <div className="password-label-container">
+              <label htmlFor="password" className="form-label">Password</label>
+              <a href="#" className="forgot-password">Forgot password?</a>
+            </div>
+            <div className="input-with-icon">
+              <Lock className="input-icon" size={20} />
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                className="form-input"
+                placeholder="Enter your password"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="login-button"
+          >
+            {loading ? 'Signing in...' : 'Sign in'}
+            {!loading && <ArrowRight size={18} />}
+          </button>
+        </form>
+
+        <div className="divider">or</div>
+
+        <div className="signup-prompt">
+          Don't have an account?{' '}
+          <Link to="/signup" className="signup-link">Join now</Link>
         </div>
+      </div>
 
-        {/* <div className="auth-right">
-          <img src={authImage} alt="Community" />
-        </div> */}
-      </main>
+      <div className="footer">
+        <p>© {new Date().getFullYear()} CivicSense. All rights reserved.</p>
+      </div>
     </div>
   );
 };
