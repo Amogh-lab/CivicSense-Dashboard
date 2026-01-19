@@ -230,3 +230,26 @@
     grid-template-columns: 1fr;
   }
 }
+.ci-verify-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ci-approve {
+  flex: 1;
+  background: #16a34a;
+  color: white;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.ci-reject {
+  flex: 1;
+  background: #dc2626;
+  color: white;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 6px;
+}
