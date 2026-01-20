@@ -34,7 +34,7 @@ const Navbar = () => {
       label: "Report",
       href: "/create-issue",
     },
-    { icon: <Bell />, label: "Alerts", href: "/notifications" },
+    { icon: <Bell />, label: "Alerts", href: "/alerts" },
   ];
 
   const adminNavItems = [
@@ -49,7 +49,7 @@ const Navbar = () => {
       label: "Report",
       href: "/create-issue",
     },
-    { icon: <Bell />, label: "Alerts", href: "/notifications" },
+    { icon: <Bell />, label: "Alerts", href: "/alerts" },
   ];
 
   const navItems = user?.isAdmin ? adminNavItems : citizenNavItems;
