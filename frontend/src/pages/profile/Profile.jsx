@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import api from "../../api/axios";
 import ProfilePosts from "../../components/ProfilePosts";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "../../components/ui/Modal.css";
 import { 
   LogOut, 
@@ -36,6 +37,8 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('posts');
   const [postCount, setPostCount] = useState(0);
   const [upvoteCount, setUpvoteCount] = useState(0);
+  const { logout } = useAuth();
+
   const navigate = useNavigate();
 
   const fetchUserPosts = useCallback(async () => {
@@ -75,37 +78,16 @@ const Profile = () => {
     setShowSignOutModal(true);
   };
 
-  const confirmSignOut = async () => {
-    try {
-      // Clear client-side state first
-      localStorage.removeItem('token');
-      document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      
-      // Make API call to log out
-      try {
-        await fetch('https://civic-monitor.onrender.com/auth/logout', {
-          method: 'DELETE',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-      } catch (error) {
-        console.error('Error during sign out API call:', error);
-        // Continue with sign out flow even if API call fails
-      }
-      
-      // Clear all storage
-      localStorage.clear();
-      sessionStorage.clear();
-      
-      // Redirect to login page
-      window.location.href = '/login';
-    } catch (error) {
-      console.error('Error during sign out:', error);
-      window.location.href = '/login';
-    }
-  };
+const confirmSignOut = async () => {
+  try {
+    await logout();            // ✅ SINGLE SOURCE OF TRUTH
+    navigate("/login");        // ✅ soft redirect (no hard reload)
+  } catch (err) {
+    console.error("Logout failed:", err);
+    navigate("/login");
+  }
+};
+
 
   if (loading) return (
     <div className="flex justify-center items-center h-screen">
