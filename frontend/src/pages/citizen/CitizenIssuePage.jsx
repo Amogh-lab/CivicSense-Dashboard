@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
 import api from "../../api/axios";
 import Loader from "../../components/Loader";
 import CommentsSection from "../../components/CommentsSection";
@@ -53,6 +54,12 @@ const CitizenIssuePage = () => {
 return (
   <div className="ci-page">
     <div className="ci-container">
+      {/* Back button at the top */}
+      <div className="ci-page-header">
+        <button className="ci-back-btn" onClick={() => navigate('/explore')}>
+          <FaArrowLeft /> Back to Explore
+        </button>
+      </div>
 
       <div className="ci-main">
         <div className="ci-header">
