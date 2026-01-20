@@ -209,10 +209,6 @@ const confirmSignOut = async () => {
             )}
           </div>
           
-          <div className="connection-status">
-            <span className="connection-count">500+ connections</span>
-            <span className="connection-badge">Grow your network</span>
-          </div>
         </div>
 
         {/* Stats Section */}
