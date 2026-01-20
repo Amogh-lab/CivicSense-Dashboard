@@ -5,6 +5,10 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import { FiMenu, FiX } from "react-icons/fi";
 import "./AdminFeed.css";
 
+const ADMIN_ISSUES_CACHE = "admin_issues_cache";
+const ADMIN_TRENDING_CACHE = "admin_trending_cache";
+const CACHE_TTL = 2 * 60 * 1000;
+
 const AdminFeed = () => {
   const [issues, setIssues] = useState([]);
   const [trending, setTrending] = useState([]);
@@ -17,22 +21,71 @@ const AdminFeed = () => {
 
   /* ---------- FETCH ---------- */
 
-  const fetchAssigned = async () => {
-    const { data } = await api.get("/admin/issues");
-    setIssues(Array.isArray(data) ? data : []);
+  const fetchAssigned = async (force = false) => {
+    try {
+      if (!force) {
+        const cached = localStorage.getItem(ADMIN_ISSUES_CACHE);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < CACHE_TTL) {
+            setIssues(parsed.data);
+            return;
+          }
+        }
+      }
+
+      const { data } = await api.get("/admin/issues");
+      const normalized = Array.isArray(data) ? data : [];
+
+      localStorage.setItem(
+        ADMIN_ISSUES_CACHE,
+        JSON.stringify({
+          data: normalized,
+          timestamp: Date.now()
+        })
+      );
+
+      setIssues(normalized);
+    } catch {
+      setIssues([]);
+    }
   };
 
-  const fetchTrending = async () => {
-    const { data } = await api.get("/issues/explore");
 
-    const openSorted = Array.isArray(data)
-      ? data
-          .filter(i => i.status === "OPEN")
-          .sort((a, b) => (b.upvotes ?? 0) - (a.upvotes ?? 0))
-          .slice(0, 5)
-      : [];
+  const fetchTrending = async (force = false) => {
+    try {
+      if (!force) {
+        const cached = localStorage.getItem(ADMIN_TRENDING_CACHE);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < CACHE_TTL) {
+            setTrending(parsed.data);
+            return;
+          }
+        }
+      }
 
-    setTrending(openSorted);
+      const { data } = await api.get("/issues/explore");
+
+      const openSorted = Array.isArray(data)
+        ? data
+            .filter(i => i.status === "OPEN")
+            .sort((a, b) => (b.upvotes ?? 0) - (a.upvotes ?? 0))
+            .slice(0, 5)
+        : [];
+
+      localStorage.setItem(
+        ADMIN_TRENDING_CACHE,
+        JSON.stringify({
+          data: openSorted,
+          timestamp: Date.now()
+        })
+      );
+
+      setTrending(openSorted);
+    } catch {
+      setTrending([]);
+    }
   };
 
   useEffect(() => {

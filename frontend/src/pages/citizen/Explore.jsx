@@ -11,6 +11,8 @@ import RightSidebarGlobal from "../../components/RightSidebarGlobal";
 
 const BATCH_SIZE = 5;
 const ALLOWED_STATUSES = ["OPEN", "IN_PROGRESS", "RESOLVED_PENDING_USER"];
+const EXPLORE_CACHE_KEY = "explore_issues_cache";
+const EXPLORE_CACHE_TIME = 5 * 60 * 1000; // 5 minutes
 
 const Explore = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -24,18 +26,40 @@ const Explore = () => {
 
   /* ---------------- FETCH ONCE ---------------- */
 
-  const fetchExploreFeed = async () => {
+  const fetchExploreFeed = async (force = false) => {
     try {
       setLoading(true);
+
+      if (!force) {
+        const cached = localStorage.getItem(EXPLORE_CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+
+          if (Date.now() - parsed.timestamp < EXPLORE_CACHE_TIME) {
+            setAllIssues(parsed.data);
+            setVisibleIssues(parsed.data.slice(0, BATCH_SIZE));
+            setPage(1);
+            setLoading(false);
+          }
+        }
+      }
+
       const { data } = await api.get("/issues/explore");
 
       const normalized = Array.isArray(data)
         ? data.filter((i) => ALLOWED_STATUSES.includes(i.status))
         : [];
 
+      localStorage.setItem(
+        EXPLORE_CACHE_KEY,
+        JSON.stringify({
+          data: normalized,
+          timestamp: Date.now(),
+        })
+      );
+
       setAllIssues(normalized);
       setVisibleIssues(normalized.slice(0, BATCH_SIZE));
-
       setPage(1);
     } catch {
       setAllIssues([]);
@@ -45,13 +69,14 @@ const Explore = () => {
     }
   };
 
+
   useEffect(() => {
+    fetchExploreFeed();
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
     window.addEventListener('resize', handleResize);
-    fetchExploreFeed();
     
     return () => {
       window.removeEventListener('resize', handleResize);
