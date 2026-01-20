@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import api from "../../api/axios";
 import IssueCard from "../../components/IssueCard";
 import Loader from "../../components/Loader";
+import ScrollToTop from "../../components/ScrollToTop";
 import "./Explore.css";
 import LeftSidebar from "../../components/LeftSidebar";
 import RightSidebar from "../../components/RightSidebar";
@@ -185,6 +186,7 @@ const Explore = () => {
         )}
 
       </div>
+      <ScrollToTop />
     </div>
   );
 };

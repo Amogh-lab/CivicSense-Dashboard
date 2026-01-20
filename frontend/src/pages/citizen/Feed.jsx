@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import IssueCard from "../../components/IssueCard";
 import Loader from "../../components/Loader";
+import ScrollToTop from "../../components/ScrollToTop";
 import "./Citizen.css";
 
 const Feed = () => {
@@ -54,6 +55,7 @@ const Feed = () => {
           )}
         </div>
       </div>
+      <ScrollToTop />
     </div>
   );
 };

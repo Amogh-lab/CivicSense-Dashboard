@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import "../../styles/profile.css";
 import ConfirmationModal from "../../components/ui/ConfirmationModal";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -141,6 +142,7 @@ const Profile = () => {
           Edit Profile
         </button>
       </div>
+      <ScrollToTop />
     </div>
   );
 
