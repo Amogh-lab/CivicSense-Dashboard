@@ -12,6 +12,7 @@ import AdminFeed from "./pages/admin/AdminFeed";
 import AdminIssuePage from "./pages/admin/AdminIssuePage";
 
 import Navbar from "./components/Navbar";
+import AlertsPage from "./pages/AlertsPage";
 import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -93,6 +94,17 @@ function App() {
           path="/profile/edit"
           element={<ProtectedRoute><EditProfile /></ProtectedRoute>}
         />
+
+        {/* ALERTS */}
+        <Route
+        path="/alerts"
+        element={
+          <ProtectedRoute>
+            <AlertsPage />
+          </ProtectedRoute>
+        }
+        />
+
 
         {/* FALLBACK */}
         <Route
