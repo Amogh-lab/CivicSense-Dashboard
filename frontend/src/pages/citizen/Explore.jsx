@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import api from "../../api/axios";
 import IssueCard from "../../components/IssueCard";
-import Loader from "../../components/Loader";
 import ScrollToTop from "../../components/ScrollToTop";
 import "./Explore.css";
 import LeftSidebar from "../../components/LeftSidebar";
 import RightSidebar from "../../components/RightSidebar";
 import RightSidebarGlobal from "../../components/RightSidebarGlobal";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 
 const BATCH_SIZE = 5;
@@ -19,6 +19,7 @@ const Explore = () => {
   const [allIssues, setAllIssues] = useState([]);
   const [visibleIssues, setVisibleIssues] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
   const [page, setPage] = useState(1);
@@ -30,6 +31,7 @@ const Explore = () => {
     try {
       setLoading(true);
 
+      setInitialLoad(true);
       if (!force) {
         const cached = localStorage.getItem(EXPLORE_CACHE_KEY);
         if (cached) {
@@ -40,6 +42,8 @@ const Explore = () => {
             setVisibleIssues(parsed.data.slice(0, BATCH_SIZE));
             setPage(1);
             setLoading(false);
+            setInitialLoad(false);
+            return; // Exit early if using cached data
           }
         }
       }
@@ -66,6 +70,7 @@ const Explore = () => {
       setVisibleIssues([]);
     } finally {
       setLoading(false);
+      setInitialLoad(false);
     }
   };
 
@@ -135,7 +140,33 @@ const Explore = () => {
     [loadMore, loading]
   );
 
-  if (loading) return <Loader />;
+  if (loading || initialLoad) {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        zIndex: 1000
+      }}>
+        <DotLottieReact
+          src="https://lottie.host/c0a952eb-a9fe-49f0-afe5-66052ccb01df/TueB10JBvW.lottie"
+          loop
+          autoplay
+          style={{ 
+            width: '200px', 
+            height: '200px',
+            margin: 'auto'
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="explore-page">

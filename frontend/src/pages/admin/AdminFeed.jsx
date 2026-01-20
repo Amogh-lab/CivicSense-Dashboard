@@ -162,6 +162,15 @@ const AdminFeed = () => {
 
       {/* SIDEBAR */}
       <div className={`sidebar-container ${showSidebar ? "show" : ""}`}>
+        {showSidebar && (
+          <button 
+            className="sidebar-close-button"
+            onClick={() => setShowSidebar(false)}
+            aria-label="Close sidebar"
+          >
+            <FiX size={24} />
+          </button>
+        )}
         <AdminSidebar
           issues={issues}
           activeStatus={activeStatus}

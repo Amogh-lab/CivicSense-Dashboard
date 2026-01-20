@@ -3,9 +3,10 @@
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   animation: slideDown 0.3s ease;
   position: relative;
-  z-index: 100;
-  margin-bottom: 0;
+  z-index: 5;
+  margin: -40px 0 0 -10px; /* Shifted left by 10px and up by 40px */
   overflow: visible;
+  padding-bottom: 20px; /* Added bottom padding to ensure content isn't cut off */
 }
 
 @keyframes slideDown {
@@ -23,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px 12px 20px;
+  padding: 16px 15px 12px 15px;
   border-bottom: 1px solid #e2e8f0;
 }
 
@@ -91,9 +92,10 @@
 }
 
 .comments-list {
-  padding: 16px 20px;
+  padding: 16px 15px 40px; /* Reduced side padding from 20px to 15px */
   max-height: 300px;
   overflow-y: auto;
+  scroll-padding-bottom: 20px;
 }
 
 .comment-item {
@@ -154,11 +156,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 20px;
+  padding: 16px 15px;
   border-top: 1px solid #e2e8f0;
   background: white;
   position: relative;
-  z-index: 101;
+  z-index: 6;
   margin-bottom: 0;
 }
 
@@ -198,7 +200,7 @@
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   position: relative;
-  z-index: 102;
+  z-index: 7;
 }
 
 .post-comment-btn:hover:not(:disabled) {

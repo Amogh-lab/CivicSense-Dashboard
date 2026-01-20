@@ -3,6 +3,7 @@ import api from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { categorizePost } from "../../utils/gemini";
+import LoadingModal from '../../components/LoadingModal';
 import "./CreateIssue.css";
 
 const CreateIssue = () => {
@@ -35,6 +36,8 @@ const CreateIssue = () => {
     }
     fetchInitialData();
   }, [user, navigate]);
+
+  // No early return - we'll render the modal alongside the form
 
   const fetchInitialData = async () => {
     try {
@@ -113,7 +116,9 @@ const CreateIssue = () => {
   };
 
   return (
-    <div className="modal-overlay">
+    <>
+      <LoadingModal isOpen={loading} message="Submitting your post..." />
+      <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
           <h2 className="modal-title">Report an Issue</h2>
@@ -388,7 +393,8 @@ const CreateIssue = () => {
           </form>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
