@@ -118,3 +118,10 @@ This project focuses on **real-world system design**, **scalable frontend archit
 - Cache where safe, refetch where necessary
 
 ---
+
+## Author
+
+**Amogh A P**  
+AI & ML Engineering  
+Full-Stack Systems & Product Engineering
+
