@@ -119,9 +119,32 @@ This project focuses on **real-world system design**, **scalable frontend archit
 
 ---
 
-## Author
+## Configuration
 
-**Amogh A P**  
-AI & ML Engineering  
-Full-Stack Systems & Product Engineering
+### Backend API
+- **VITE_API_URL**: `https://civic-monitor.onrender.com/`
+
+### Admin Credentials
+The following admin accounts are available for testing:
+
+| Email | Password |
+|-------|----------|
+| urbandevelopment.pattangere@admin.com | Admin@123 |
+| trafficpolice.pattangere@admin.com | Admin@123 |
+| pwd.pattangere@admin.com | Admin@123 |
+| healthdepartment.pattangere@admin.com | Admin@123 |
+| bwssb.pattangere@admin.com | Admin@123 |
+| bescom.pattangere@admin.com | Admin@123 |
+| bbmp.pattangere@admin.com | Admin@123 |
+
+**Common password for all admin accounts**: `Admin@123`
+
+---
+
+## Contributors
+
+- **Amogh A. P.**
+- **Shripad G Maradi**
+- **Preetham M R**
+- **Rohan R Gowda**
 
