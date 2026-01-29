@@ -189,13 +189,21 @@ const CreateIssue = () => {
                       try {
                         setIsCategorizing(true);
                         setError('');
+                        console.log('Starting categorization for:', formData.description);
                         const categoryName = await categorizePost(formData.description);
+                        console.log('Gemini returned category:', categoryName);
+                        console.log('Available categories:', categories.map(c => ({ id: c.id, name: c.name })));
+                        
                         const category = categories.find(
                           (c) => c.name.toLowerCase() === categoryName.toLowerCase()
                         );
+                        console.log('Found category match:', category);
+                        
                         if (category) {
+                          console.log('Setting categoryId to:', category.id);
                           setFormData({ ...formData, categoryId: category.id });
                         } else {
+                          console.error('No matching category found for:', categoryName);
                           setError('Could not determine category. Please select manually.');
                         }
                       } catch (err) {
